@@ -1,4 +1,5 @@
 services:
+  # Primary Web Service (Native Node.js runtime)
   - type: web
     name: campus-desk-api
     runtime: node
@@ -12,4 +13,21 @@ services:
       - key: MONGODB_URI
         sync: false
       - key: FRONTEND_URL
+        value: https://student-management-system-cc.vercel.app,https://student-management-system-q6or.vercel.app,http://localhost:5173
+
+  # Additional Container Service (Isolated Docker Container)
+  - type: web
+    name: campus-desk-api-container
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
         sync: false
+      - key: FRONTEND_URL
+        value: https://student-management-system-cc.vercel.app,https://student-management-system-q6or.vercel.app,http://localhost:5173
