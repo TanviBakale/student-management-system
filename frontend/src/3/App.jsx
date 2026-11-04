@@ -30,10 +30,17 @@ function App() {
 
   const loadData = useCallback(async () => {
     setLoading(true);
+    setError('');
     try {
       const [s, d] = await Promise.all([request('/api/students'), request('/api/departments')]);
-      setStudents(s.data);
-      setDepartments(d.data);
+      const extractArray = (res) => {
+        if (Array.isArray(res)) return res;
+        if (Array.isArray(res?.data)) return res.data;
+        if (Array.isArray(res?.data?.data)) return res.data.data;
+        return [];
+      };
+      setStudents(extractArray(s));
+      setDepartments(extractArray(d));
     } catch (e) {
       setError(e.message);
     } finally {

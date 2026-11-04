@@ -35,8 +35,14 @@ function App() {
         request('/api/students'),
         request('/api/departments')
       ]);
-      setStudents(studentResponse.data);
-      setDepartments(departmentResponse.data);
+      const extractArray = (res) => {
+        if (Array.isArray(res)) return res;
+        if (Array.isArray(res?.data)) return res.data;
+        if (Array.isArray(res?.data?.data)) return res.data.data;
+        return [];
+      };
+      setStudents(extractArray(studentResponse));
+      setDepartments(extractArray(departmentResponse));
     } catch (loadError) {
       setError(loadError.message);
     } finally {
