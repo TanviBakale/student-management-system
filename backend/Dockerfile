@@ -9,7 +9,7 @@ ENV PORT=10000
 
 # Install dependencies (utilizing layer caching)
 COPY package*.json ./
-RUN npm ci --only=production
+RUN if [ -f package-lock.json ]; then npm ci --omit=dev; else npm install --omit=dev; fi
 
 # Copy backend source files
 COPY . .
