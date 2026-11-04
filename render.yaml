@@ -31,3 +31,20 @@ services:
         sync: false
       - key: FRONTEND_URL
         value: https://student-management-system-cc.vercel.app,https://student-management-system-q6or.vercel.app,http://localhost:5173
+
+  # Additional Container Service 2 (Root Context Docker Container)
+  - type: web
+    name: campus-desk-api-root-container
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: FRONTEND_URL
+        value: https://student-management-system-cc.vercel.app,https://student-management-system-q6or.vercel.app,http://localhost:5173
